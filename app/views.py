@@ -32,3 +32,16 @@ def delete_form(request: HttpRequest, id_: str) -> HttpResponse:
         cars = [car for car in cars if car.id != UUID(id_)]
         return HttpResponse("", status=204)
     return redirect("/")
+
+
+def add_car(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        cars.append(
+            Car(
+                id=uuid4(),
+                model=request.POST.get("model", ""),
+                speed=request.POST.get("speed", ""),
+                color=request.POST.get("color", ""),
+            )
+        )
+    return redirect("/")

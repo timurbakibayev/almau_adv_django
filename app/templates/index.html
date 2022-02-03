@@ -31,16 +31,46 @@
                                     "></div>
                         </td>
                         <td>
-                            <button onclick="delete_car('{{ car.id }}')" class="btn btn-danger" style="zoom: 0.7">Delete</button>
-                            <form method="post" action="/delete_form/{{ car.id }}">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-success" style="zoom: 0.7">Delete with forms</button>
-                            </form>
+                            <div style="display: flex; flex-direction: row">
+                                <button onclick="delete_car('{{ car.id }}')" class="btn btn-danger" style="zoom: 0.7">Delete</button>
+                                <form method="post" action="/delete_form/{{ car.id }}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success" style="zoom: 0.7; margin-left: 1em">Delete2</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+         <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            New Car
+         </button>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form method="post" action="/add_car/" >
+                    <div class="row g-3">
+                        {% csrf_token %}
+                        <div class="col-auto">
+                            <label for="model" >Model</label>
+                            <input type="text" class="form-control-plaintext" id="model" name="model" value="Toyota">
+                        </div>
+                        <div class="col-auto">
+                            <label for="speed" >Speed</label>
+                            <input type="number" class="form-control-plaintext" id="speed" name="speed" value="100">
+                        </div>
+                        <div class="col-auto">
+                            <label for="color" >Color</label>
+                            <input type="color" style="min-width: 2em" class="form-control-plaintext" id="color" name="color" value="#0000FF">
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success" >Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -54,4 +84,3 @@
 </script>
 </html>
 
-1. POST

@@ -5,11 +5,13 @@ from app.views import (
     index,
     delete,
     delete_form,
+    add_car,
 )
 
 urlpatterns = [
     path('', index),
     path('delete/<str:id_>', delete),
     path('delete_form/<str:id_>', delete_form),
+    path('add_car/', add_car),
     path('admin/', admin.site.urls),
 ]
