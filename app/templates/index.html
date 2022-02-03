@@ -14,14 +14,29 @@
                     <th>Model</th>
                     <th>Speed</th>
                     <th>Color</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for car in cars %}
-                    <tr>
+                    <tr id="row_{{ car.id }}">
                         <td>{{ car.model }}</td>
                         <td>{{ car.speed }}</td>
-                        <td>{{ car.color }}</td>
+                        <td>
+                            <div style="
+                                    width: 1em;
+                                    height: 1em;
+                                    background-color: {{ car.color }};
+                                    border-radius: 50%;
+                                    "></div>
+                        </td>
+                        <td>
+                            <button onclick="delete_car('{{ car.id }}')" class="btn btn-danger" style="zoom: 0.7">Delete</button>
+                            <form method="post" action="/delete_form/{{ car.id }}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success" style="zoom: 0.7">Delete with forms</button>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -29,4 +44,14 @@
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script>
+    const delete_car = async (id) => {
+        const result = await fetch(`/delete/${id}`);
+        if (result.status === 204) {
+            document.getElementById(`row_${id}`).style.visibility = "collapse";
+        }
+    }
+</script>
 </html>
+
+1. POST
