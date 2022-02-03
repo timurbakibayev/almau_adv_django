@@ -17,21 +17,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Audi A6</td>
-                    <td>350</td>
-                    <td>green</td>
-                </tr>
-                <tr>
-                    <td>Toyota Corolla</td>
-                    <td>180</td>
-                    <td>red</td>
-                </tr>
-                <tr>
-                    <td>Tesla Model S</td>
-                    <td>390</td>
-                    <td>gray</td>
-                </tr>
+                {% for car in cars %}
+                    <tr>
+                        <td>{{ car.model }}</td>
+                        <td>{{ car.speed }}</td>
+                        <td>{{ car.color }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
