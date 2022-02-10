@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect  # type: ignore
 from django.test import TestCase, Client  # type: ignore
 
 

@@ -33,10 +33,6 @@
                         <td>
                             <div style="display: flex; flex-direction: row">
                                 <button onclick="delete_car('{{ car.id }}')" class="btn btn-danger" style="zoom: 0.7">Delete</button>
-                                <form method="post" action="/delete_form/{{ car.id }}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-success" style="zoom: 0.7; margin-left: 1em">Delete2</button>
-                                </form>
                             </div>
                         </td>
                     </tr>

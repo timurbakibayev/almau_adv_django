@@ -1,58 +1,27 @@
-from typing import List
-from uuid import uuid4, UUID
+from django.http import HttpRequest, HttpResponse  # type: ignore
+from django.shortcuts import render, redirect  # type: ignore
+from django.contrib.auth.models import User  # type: ignore
 
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-
-from app.car.car import Car
-
-
-def create_user(username: str, password: str) -> User:
-    user = User()
-    user.username = username
-    user.set_password(password)
-    user.save()
-    return user
-
-
-cars: List[Car] = [
-    Car(id=uuid4(), model="Audi A6", speed=350, color="green"),
-    Car(id=uuid4(), model="Toyota Corolla", speed=180, color="red"),
-    Car(id=uuid4(), model="Tesla Model S", speed=390, color="gray"),
-    Car(id=uuid4(), model="Honda Civic", speed=160, color="silver"),
-    Car(id=uuid4(), model="Honda Civic", speed=161, color="silver"),
-]
+from app.models import Car
 
 
 def index(request: HttpRequest) -> HttpResponse:
     return render(request, "index.html", context={
-        "cars": cars
+        "cars": Car.objects.all()
     })
 
 
 def delete(request: HttpRequest, id_: str) -> HttpResponse:
     global cars
-    cars = [car for car in cars if car.id != UUID(id_)]
+    Car.objects.get(id=id_).delete()
     return HttpResponse("", status=204)
-
-
-def delete_form(request: HttpRequest, id_: str) -> HttpResponse:
-    global cars
-    if request.method == "POST":
-        cars = [car for car in cars if car.id != UUID(id_)]
-        return HttpResponse("", status=204)
-    return redirect("/")
 
 
 def add_car(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
-        cars.append(
-            Car(
-                id=uuid4(),
-                model=request.POST.get("model", ""),
-                speed=int(request.POST.get("speed", "")),
-                color=request.POST.get("color", ""),
-            )
+        Car.objects.create(
+            model=request.POST.get("model", ""),
+            speed=int(request.POST.get("speed", "")),
+            color=request.POST.get("color", ""),
         )
     return redirect("/")
