@@ -13,5 +13,5 @@ urlpatterns = [
     path('delete/<str:id_>', delete),
     path('delete_form/<str:id_>', delete_form),
     path('add_car/', add_car),
-    path('admin/', admin.site.urls),
+    path('admin777/', admin.site.urls),
 ]

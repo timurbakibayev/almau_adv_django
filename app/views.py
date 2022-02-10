@@ -3,14 +3,25 @@ from uuid import uuid4, UUID
 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 
 from app.car.car import Car
+
+
+def create_user(username: str, password: str) -> User:
+    user = User()
+    user.username = username
+    user.set_password(password)
+    user.save()
+    return user
+
 
 cars: List[Car] = [
     Car(id=uuid4(), model="Audi A6", speed=350, color="green"),
     Car(id=uuid4(), model="Toyota Corolla", speed=180, color="red"),
     Car(id=uuid4(), model="Tesla Model S", speed=390, color="gray"),
     Car(id=uuid4(), model="Honda Civic", speed=160, color="silver"),
+    Car(id=uuid4(), model="Honda Civic", speed=161, color="silver"),
 ]
 
 
@@ -40,7 +51,7 @@ def add_car(request: HttpRequest) -> HttpResponse:
             Car(
                 id=uuid4(),
                 model=request.POST.get("model", ""),
-                speed=request.POST.get("speed", ""),
+                speed=int(request.POST.get("speed", "")),
                 color=request.POST.get("color", ""),
             )
         )
