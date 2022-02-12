@@ -33,7 +33,9 @@
                         <td>
                             <div style="display: flex; flex-direction: row">
                                 <button onclick="delete_car('{{ car.id }}')" class="btn btn-danger" style="zoom: 0.7">Delete</button>
+                                <button onclick="edit_car('{{ car.id }}')" class="btn btn-danger" style="zoom: 0.7">Edit</button>
                             </div>
+                            
                         </td>
                     </tr>
                 {% endfor %}
@@ -45,7 +47,7 @@
          </button>
         <div class="collapse" id="collapseExample">
             <div class="card card-body">
-                <form method="post" action="/add_car/" >
+                <form method="post" action="/add_car/" id="car_form" >
                     <div class="row g-3">
                         {% csrf_token %}
                         <div class="col-auto">
@@ -62,7 +64,7 @@
                         </div>
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-success" >Add</button>
+                        <button type="submit" id="pressed_btn" class="btn btn-success" >Add</button>
                     </div>
                 </form>
             </div>
@@ -76,6 +78,14 @@
         if (result.status === 204) {
             document.getElementById(`row_${id}`).style.visibility = "collapse";
         }
+    }
+
+    const edit_car = async (id) => {
+            document.getElementById(`pressed_btn`).textContent = "Edit";
+            document.getElementById('car_form').onsubmit = () => {
+            document.getElementById(`pressed_btn`).textContent = "Add";
+            document.getElementById('car_form').action = `/edit_car/${id}`;
+            document.getElementById('car_form').method = "post";}
     }
 </script>
 </html>
