@@ -19,7 +19,7 @@ def car_id(cars: List, model: str, speed: int, color: str) -> Optional[int]:
     return None
 
 def compare_cars(car_one, car_two) -> bool:
-    return car_one.model == car_two.model and car_one.speed == car_two.speed and car_one.color == car_two.color
+    return car_one['model'] == car_two.model and car_one["speed"] == car_two.speed and car_one["color"] == car_two.color
 
 
 class TestCars(TestCase):
@@ -107,8 +107,13 @@ class TestCars(TestCase):
             speed=200,
             color="green",
         )
-        c.get(f"/edit_car/{id_}")
+        updated_car = {
+            "model": "Updated Jeep",
+            "speed": 400,
+            "color": "blue",
+        }
+        c.post(f"/edit_car/{id_}", updated_car)
 
         response = c.get("/")
         self.assertEquals(len(response.context["cars"]), number_of_cars)
-        assert compare_cars(car_one=initial_car, car_two=response.context["cars"][0]) == False
+        assert compare_cars(car_one=updated_car, car_two=response.context["cars"][0]) == True
