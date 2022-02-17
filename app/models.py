@@ -10,3 +10,17 @@ class Car(models.Model):
     def __str__(self):
         return f"{self.model}, speed: {self.speed}, {self.color}"
 
+    def total_trip_km(self) -> int:
+        return sum(
+            trip.km
+            for trip in Trip.objects.filter(car=self)
+        )
+
+
+class Trip(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    km = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.car}: {self.date}, {self.km} km"

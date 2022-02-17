@@ -34,3 +34,12 @@ def add_car(request: HttpRequest) -> HttpResponse:
             car.color = request.POST.get("color", "")
             car.save()
     return redirect("/")
+
+
+def car_trips(request: HttpRequest, id_: int) -> HttpResponse:
+    return HttpResponse(f"Here is a car with id {id_}")
+
+# TODO: homework: Implement trips CRUD
+# TODO: pagination for trips
+# TODO: filtering for trips by date
+# TODO: search cars

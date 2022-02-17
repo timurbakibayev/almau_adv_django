@@ -7,13 +7,14 @@
 </head>
 <body>
     <div style="margin: 2em; max-width: 800px">
-        <h1>Hello, world!</h1>
+        <h1>Your cars</h1>
         <table class="table">
             <thead>
                 <tr>
                     <th>Model</th>
                     <th>Speed</th>
                     <th>Color</th>
+                    <th>Total Trip</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -30,12 +31,13 @@
                                     border-radius: 50%;
                                     "></div>
                         </td>
+                        <td>{{ car.total_trip_km }} km</td>
                         <td>
                             <div style="display: flex; flex-direction: row">
                                 <button onclick="delete_car('{{ car.id }}')" class="btn btn-danger" style="zoom: 0.7; margin-right: 1em">Delete</button>
-                                <button onclick="edit_car('{{ car.id }}', '{{ car.model }}', '{{ car.speed }}', '{{ car.color }}')" class="btn btn-info" style="zoom: 0.7">Edit</button>
+                                <button onclick="edit_car('{{ car.id }}', '{{ car.model }}', '{{ car.speed }}', '{{ car.color }}')" class="btn btn-info" style="zoom: 0.7; margin-right: 1em">Edit</button>
+                                <a class="btn btn-info" href="/cars/{{ car.id }}" style="zoom: 0.7">Trips</a>
                             </div>
-                            
                         </td>
                     </tr>
                 {% endfor %}
