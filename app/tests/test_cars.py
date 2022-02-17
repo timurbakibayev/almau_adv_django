@@ -108,11 +108,12 @@ class TestCars(TestCase):
             color="green",
         )
         updated_car = {
+            "id_": id_,
             "model": "Updated Jeep",
             "speed": 400,
             "color": "blue",
         }
-        c.post(f"/edit_car/{id_}", updated_car)
+        c.post(f"/add_car/", updated_car)
 
         response = c.get("/")
         self.assertEquals(len(response.context["cars"]), number_of_cars)
