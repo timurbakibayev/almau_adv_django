@@ -40,6 +40,6 @@ def car_trips(request: HttpRequest, id_: int) -> HttpResponse:
     return HttpResponse(f"Here is a car with id {id_}")
 
 # TODO: homework: Implement trips CRUD
-# TODO: pagination for trips
-# TODO: filtering for trips by date
-# TODO: search cars
+# TODO: class: pagination for trips
+# TODO: class: filtering for trips by date
+# TODO: class: search cars
