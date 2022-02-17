@@ -37,11 +37,20 @@ def edit_car(request: HttpRequest, id_: str) -> HttpResponse:
         car.color = request.POST.get("color", "")
         car.save()
     return redirect('/')
+
+
 def add_car(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
-        Car.objects.create(
-            model=request.POST.get("model", ""),
-            speed=int(request.POST.get("speed", "")),
-            color=request.POST.get("color", ""),
-        )
+        if request.POST.get("id_", "") == "":
+            Car.objects.create(
+                model=request.POST.get("model", ""),
+                speed=int(request.POST.get("speed", "")),
+                color=request.POST.get("color", ""),
+            )
+        else:
+            car = Car.objects.get(pk=int(request.POST.get("id_", "")))
+            car.model = request.POST.get("model", "")
+            car.speed = int(request.POST.get("speed", ""))
+            car.color = request.POST.get("color", "")
+            car.save()
     return redirect("/")
