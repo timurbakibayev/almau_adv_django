@@ -19,7 +19,7 @@ class Car(models.Model):
 
 class Trip(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(blank=True)
     km = models.IntegerField(default=0)
 
     def __str__(self):

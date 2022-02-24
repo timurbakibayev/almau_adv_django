@@ -13,7 +13,6 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 def delete(request: HttpRequest, id_: str) -> HttpResponse:
-    global cars
     Car.objects.get(id=id_).delete()
     return HttpResponse("", status=204)
 
@@ -38,3 +37,4 @@ def add_car(request: HttpRequest) -> HttpResponse:
 # TODO: class: search cars
 
 # TODO: homework: TESTS!!!
+# TODO: if a user enters non-positive (<=0) km, then message: "Only positive values allowed" FRONT-END!!

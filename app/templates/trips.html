@@ -31,7 +31,7 @@
                         <td>
                             <div style="display: flex; flex-direction: row">
                                 <button onclick="delete_trip('{{ trip.id }}')" class="btn btn-danger" style="zoom: 0.7; margin-right: 1em">Delete</button>
-                                <button onclick="edit_trip('{{ trip.id }}', '{{ trip.date|date:"Y-m-d" }}'" class="btn btn-info" style="zoom: 0.7; margin-right: 1em">Edit</button>
+                                <button onclick="edit_trip('{{ trip.id }}', '{{ trip.date|date:"Y-m-d" }}', {{ trip.km }})" class="btn btn-info" style="zoom: 0.7; margin-right: 1em">Edit</button>
                             </div>
                         </td>
                     </tr>
@@ -43,66 +43,105 @@
             New Trip
          </button>
 
-{#        <div class="modal fade" id="editCarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
-{#          <div class="modal-dialog">#}
-{#            <div class="modal-content">#}
-{#              <div class="modal-header">#}
-{#                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>#}
-{#                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>#}
-{#              </div>#}
-{#                <form method="post" action="/add_car/" id="car_form" >#}
-{#                  {% csrf_token %}#}
-{#                  <div class="modal-body">#}
-{#                        <input type="text" hidden id="id_" name="id_" value="">#}
-{#                        <div class="form-group">#}
-{#                            <label for="model" >Model</label>#}
-{#                            <input placeholder="Model name" type="text" class="form-control" id="model" name="model" value="Toyota">#}
-{#                        </div>#}
-{#                        <div class="row g-3">#}
-{#                            <div class="col-auto">#}
-{#                                <label for="speed" >Speed</label>#}
-{#                                <input placeholder="Max Speed" type="number" class="form-control" id="speed" name="speed" value="100">#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="row g-3">#}
-{#                            <div class="col-auto">#}
-{#                                <label for="color" >Color</label>#}
-{#                                <input type="color" style="min-width: 2em" class="form-control" id="color" name="color" value="#0000FF">#}
-{#                            </div>#}
-{#                        </div>#}
-{#                  </div>#}
-{#                  <div class="modal-footer">#}
-{#                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>#}
-{#                <button type="submit" class="btn btn-primary">Save changes</button>#}
-{#              </div>#}
-{#                </form>#}
-{#            </div>#}
-{#          </div>#}
-{#        </div>#}
+        <div class="modal fade" id="editTripModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <form method="post" >
+                  {% csrf_token %}
+                  <div class="modal-body">
+                        <input type="text" hidden id="id_" name="id_" value="">
+                        <div class="form-group">
+                            <label for="trip_date">Trip Date</label>
+                            <input type="date" class="form-control" id="trip_date" name="trip_date">
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-auto">
+                                <label for="trip_km" >Trip distance in km</label>
+                                <input placeholder="Trip distance" type="number" class="form-control" id="trip_km" name="trip_km">
+                            </div>
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+                </form>
+            </div>
+          </div>
+        </div>
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    const delete_car = async (id) => {
-        const result = await fetch(`/delete/${id}`);
-        if (result.status === 204) {
-            document.getElementById(`row_${id}`).style.visibility = "collapse";
+    const delete_trip = async (id) => {
+        let swal_result = await Swal.fire({
+            title: 'Are you sure?',
+            text: `You are deleting id ${id}`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        });
+
+        if (swal_result.isConfirmed) {
+
+            const result = await fetch(`/delete_trip/${id}`, {
+                    method: 'DELETE',
+                });
+            if (result.status === 204) {
+                document.getElementById(`row_${id}`).style.visibility = "collapse";
+                Swal.fire(
+                    'Deleted!',
+                    'Your trip has been deleted.',
+                    'success'
+                )
+            } else {
+                Swal.fire(
+                    'Something went wrong!',
+                    'Your trip is NOT deleted.',
+                    'error'
+                )
+            }
+
         }
     }
 
-    const edit_car = (id_, model, speed, color) => {
-        if (id_ === "")
-            document.getElementById("exampleModalLabel").innerHTML = "New car";
-        else
-            document.getElementById("exampleModalLabel").innerHTML = `Edit car: ${model}`;
+    const today = () => {
+        let date = new Date();
+        let month = (date.getMonth() + 1).toString();
+        if (month.length === 1)
+            month = "0" + month;
+        let day = date.getDate().toString();
+        if (day.length === 1)
+            day = "0" + day;
+        let result = `${date.getFullYear()}-${month}-${day}`;
+        console.log(result);
+        console.log(date);
+        return result;
+    }
 
-        document.getElementById("id_").value = id_;
-        document.getElementById("model").value = model;
-        document.getElementById("speed").value = speed;
-        document.getElementById("color").value = color;
+    const edit_trip = (id_, date, km) => {
+        if (id_ === "") {
+            document.getElementById("exampleModalLabel").innerHTML = "New trip";
+            document.getElementById("id_").value = "";
+            document.getElementById("trip_date").value = today();
+            document.getElementById("trip_km").value = 0;
+        }
+        else {
+            document.getElementById("exampleModalLabel").innerHTML = `Edit trip: ${id_}`;
+            document.getElementById("id_").value = id_;
+            document.getElementById("trip_date").value = date;
+            document.getElementById("trip_km").value = km;
+        }
 
-        $('#editCarModal').modal('show');
+        $('#editTripModal').modal('show');
     }
 </script>
 </html>
