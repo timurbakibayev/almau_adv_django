@@ -4,8 +4,6 @@ from django.contrib.auth.models import User  # type: ignore
 
 from app.models import Car
 
-car_id_to_edit = ''
-
 
 def index(request: HttpRequest) -> HttpResponse:
     catalog = Car.objects.all()
@@ -18,6 +16,7 @@ def delete(request: HttpRequest, id_: str) -> HttpResponse:
     global cars
     Car.objects.get(id=id_).delete()
     return HttpResponse("", status=204)
+
 
 def add_car(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
@@ -36,10 +35,6 @@ def add_car(request: HttpRequest) -> HttpResponse:
     return redirect("/")
 
 
-def car_trips(request: HttpRequest, id_: int) -> HttpResponse:
-    return HttpResponse(f"Here is a car with id {id_}")
-
-# TODO: homework: Implement trips CRUD
-# TODO: class: pagination for trips
-# TODO: class: filtering for trips by date
 # TODO: class: search cars
+
+# TODO: homework: TESTS!!!
