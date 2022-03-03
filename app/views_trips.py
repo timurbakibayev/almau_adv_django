@@ -8,6 +8,8 @@ from app.models import (
 
 
 def car_trips(request: HttpRequest, car_id: int) -> HttpResponse:
+    if request.user.is_anonymous:
+        return redirect("/login")
     if request.method == "POST":
         print("post request", request.POST)
         if request.POST.get("id_", "") == "":
@@ -43,6 +45,8 @@ def car_trips(request: HttpRequest, car_id: int) -> HttpResponse:
 
 
 def car_trips_delete(request: HttpRequest, trip_id: int) -> HttpResponse:
+    if request.user.is_anonymous:
+        return redirect("/login")
     if request.method == "DELETE":
         Trip.objects.get(id=trip_id).delete()
         return HttpResponse("", status=204)

@@ -14,6 +14,12 @@ from app.views_trips import (
     car_trips_delete,
 )
 
+from app.views_login import (
+    login_url,
+    logout_url,
+    register_url,
+)
+
 urlpatterns = [
     path('', index),
     path('delete/<str:id_>', delete),
@@ -21,4 +27,7 @@ urlpatterns = [
     path('cars/<int:car_id>/trips', car_trips),
     path('delete_trip/<int:trip_id>', car_trips_delete),
     path('admin/', admin.site.urls),
+    path('login/', login_url),
+    path('logout/', logout_url),
+    path('register/', register_url),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

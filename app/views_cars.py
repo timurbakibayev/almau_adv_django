@@ -6,6 +6,8 @@ from app.models import Car
 
 
 def index(request: HttpRequest) -> HttpResponse:
+    if request.user.is_anonymous:
+        return redirect("/login")
     search = request.GET.get("search", "")
     cars = Car.objects.all()
     if search != "":
@@ -20,11 +22,15 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 def delete(request: HttpRequest, id_: str) -> HttpResponse:
+    if request.user.is_anonymous:
+        return redirect("/login")
     Car.objects.get(id=id_).delete()
     return HttpResponse("", status=204)
 
 
 def add_car(request: HttpRequest) -> HttpResponse:
+    if request.user.is_anonymous:
+        return redirect("/login")
     if request.method == "POST":
         if request.POST.get("id_", "") == "":
             Car.objects.create(
@@ -43,5 +49,3 @@ def add_car(request: HttpRequest) -> HttpResponse:
 
 # TODO: homework: TESTS!!!
 # TODO: if a user enters non-positive (<=0) km, then message: "Only positive values allowed" FRONT-END!!
-
-# TODO: statics
