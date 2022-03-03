@@ -8,16 +8,18 @@ from app.models import (
 
 def car_trips(request: HttpRequest, car_id: int) -> HttpResponse:
     if request.method == "POST":
+        print("post request", request.POST)
         if request.POST.get("id_", "") == "":
             Trip.objects.create(
                 car_id=car_id,
-                km=int(request.POST.get("trip_km", "")),
+                km=int(request.POST.get("trip_km", "0")),
                 date=request.POST.get("trip_date", ""),
             )
         else:
             trip = Trip.objects.get(pk=int(request.POST.get("id_", "")))
-            trip.km = int(request.POST.get("trip_km", ""))
+            trip.km = int(request.POST.get("trip_km", "0"))
             trip.date = date=request.POST.get("trip_date", "")
+            trip.save()
         return redirect(f"/cars/{car_id}/trips")
 
     context = dict()
