@@ -43,3 +43,5 @@ def add_car(request: HttpRequest) -> HttpResponse:
 
 # TODO: homework: TESTS!!!
 # TODO: if a user enters non-positive (<=0) km, then message: "Only positive values allowed" FRONT-END!!
+
+# TODO: statics

@@ -25,8 +25,17 @@ def car_trips(request: HttpRequest, car_id: int) -> HttpResponse:
     context = dict()
     car = Car.objects.get(id=car_id)
     context["car"] = car
-    context["trips"] = Trip.objects.filter(car=car)
+    trips = Trip.objects.filter(car=car)
+    date_from = request.GET.get("date_from", "")
+    date_to = request.GET.get("date_to", "")
+    if date_from != "":
+        trips = trips.filter(date__gte=date_from)
+    if date_to != "":
+        trips = trips.filter(date__lte=date_to)
 
+    context["trips"] = trips
+    context["date_from"] = date_from
+    context["date_to"] = date_to
     return render(request, "trips.html", context=context)
 
 
