@@ -9,7 +9,7 @@ def index(request: HttpRequest) -> HttpResponse:
     if request.user.is_anonymous:
         return redirect("/login")
     search = request.GET.get("search", "")
-    cars = Car.objects.all()
+    cars = Car.objects.filter(user=request.user)
     if search != "":
         if search.isnumeric():
             cars = cars.filter(model__icontains=search) | cars.filter(speed=int(search))
@@ -34,12 +34,15 @@ def add_car(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         if request.POST.get("id_", "") == "":
             Car.objects.create(
+                user=request.user,
                 model=request.POST.get("model", ""),
                 speed=int(request.POST.get("speed", "")),
                 color=request.POST.get("color", ""),
             )
         else:
             car = Car.objects.get(pk=int(request.POST.get("id_", "")))
+            if car.user != request.user:
+                return redirect("/")
             car.model = request.POST.get("model", "")
             car.speed = int(request.POST.get("speed", ""))
             car.color = request.POST.get("color", "")

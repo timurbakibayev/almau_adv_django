@@ -1,7 +1,9 @@
+from django.contrib.auth.models import User
 from django.db import models  # type: ignore
 
 
 class Car(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     model = models.CharField(max_length=1000, default="")
     speed = models.IntegerField(default=-1)
     color = models.CharField(max_length=1000, default="red")
