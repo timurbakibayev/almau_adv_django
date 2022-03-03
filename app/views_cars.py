@@ -6,9 +6,16 @@ from app.models import Car
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    catalog = Car.objects.all()
+    search = request.GET.get("search", "")
+    cars = Car.objects.all()
+    if search != "":
+        if search.isnumeric():
+            cars = cars.filter(model__icontains=search) | cars.filter(speed=int(search))
+        else:
+            cars = cars.filter(model__icontains=search)
     return render(request, "index.html", context={
-        "cars": catalog
+        "cars": cars,
+        "search": search,
     })
 
 
@@ -33,8 +40,6 @@ def add_car(request: HttpRequest) -> HttpResponse:
             car.save()
     return redirect("/")
 
-
-# TODO: class: search cars
 
 # TODO: homework: TESTS!!!
 # TODO: if a user enters non-positive (<=0) km, then message: "Only positive values allowed" FRONT-END!!

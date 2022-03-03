@@ -7,6 +7,7 @@
     <title>AlmaU Advanced Django Development</title>
 </head>
 <body>
+{% include "header.html" %}
 <div style="margin: 2em; max-width: 800px">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -50,6 +51,10 @@
                         <a class="btn btn-info" href="/cars/{{ car.id }}/trips" style="zoom: 0.7">Trips</a>
                     </div>
                 </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5">No cars found {% if search %}for search {{ search }}{% endif %}</td>
             </tr>
         {% endfor %}
         </tbody>
