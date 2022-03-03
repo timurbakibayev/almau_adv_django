@@ -38,6 +38,7 @@
                 <tr>
                     <th>Date</th>
                     <th>km</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -58,6 +59,13 @@
                     </tr>
                 {% endfor %}
             </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>{% if total %}{{ total }} km{% endif %}</th>
+                    <th></th>
+                </tr>
+            </tfoot>
         </table>
 
          <button class="btn btn-primary btn-sm" type="button" onclick="edit_trip('', '')">

@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from app.models import (
@@ -36,6 +37,8 @@ def car_trips(request: HttpRequest, car_id: int) -> HttpResponse:
     context["trips"] = trips
     context["date_from"] = date_from
     context["date_to"] = date_to
+    # context["total"] = sum(row.km for row in trips)
+    context["total"] = trips.aggregate(Sum('km'))["km__sum"]
     return render(request, "trips.html", context=context)
 
 
