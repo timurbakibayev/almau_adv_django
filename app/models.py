@@ -26,3 +26,11 @@ class Trip(models.Model):
 
     def __str__(self):
         return f"{self.car}: {self.date}, {self.km} km"
+
+
+class Teleuser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    chat_id = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.user}: {self.chat_id}"
