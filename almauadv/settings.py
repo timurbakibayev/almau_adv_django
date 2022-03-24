@@ -39,8 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_beat',
+    'django_celery_results',
     'app',
 ]
+
+CELERY_RESULT_BACKEND = "django-db"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

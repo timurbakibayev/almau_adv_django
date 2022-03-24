@@ -1,9 +1,11 @@
+import random
+
 from django.contrib.auth import login, authenticate, logout
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpRequest, HttpResponse  # type: ignore
 from django.shortcuts import render, redirect  # type: ignore
 from django.contrib.auth.models import User  # type: ignore
-
-from app.models import Car
+from app.emails import send_email
 
 
 def logout_url(request: HttpRequest) -> HttpResponse:
@@ -51,3 +53,30 @@ def login_url(request: HttpRequest) -> HttpResponse:
         context["message"] = "Incorrect login or password"
 
     return render(request, "login.html", context=context)
+
+
+def forgot_password(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        email = request.POST.get("email", "")
+        if email != "":
+            try:
+                user = User.objects.get(email=email)
+                new_password = "".join([random.choice(list("ABCDEabcde0123456789")) for i in range(6)])
+                user.set_password(new_password)
+                user.save()
+                text = f"Your new password is this: {new_password}"
+                send_email.delay(
+                    email=email,
+                    text=text,
+                    subject="Password Recovery",
+                )
+                return redirect("/forgot_password_success")
+            except ObjectDoesNotExist:
+                print("Some hacker tried this email", email)
+                return redirect("/forgot_password_success")
+    return render(request, "forgot.html")
+
+
+def forgot_password_success(request: HttpRequest) -> HttpResponse:
+    return render(request, "forgot_success.html")
+

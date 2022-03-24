@@ -18,6 +18,8 @@ from app.views_login import (
     login_url,
     logout_url,
     register_url,
+    forgot_password,
+    forgot_password_success,
 )
 
 urlpatterns = [
@@ -30,4 +32,6 @@ urlpatterns = [
     path('login/', login_url),
     path('logout/', logout_url),
     path('register/', register_url),
+    path('forgot_password/', forgot_password),
+    path('forgot_password_success/', forgot_password_success),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
